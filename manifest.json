@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "Checkbox Checker",
+  "name": "BULK Checkbox Checker",
   "version": "1.0",
   "description": "Check/uncheck all checkboxes in a selected container. Click extension icon to toggle.",
   "permissions": [
@@ -10,7 +10,7 @@
   ],
   "action": {
     "default_popup": "popup.html",
-    "default_title": "Checkbox Checker"
+    "default_title": "BULK Checkbox Checker"
   },
   "background": {
     "service_worker": "background.js"
