@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="cc-styles.css">
+</head>
+<body>
+  <div class="header">
+    <h3>Bulk Checkbox Checker</h3>
+  </div>
+  
+  <div class="checkbox-count" id="checkboxCount">
+    Searching for checkboxes...
+  </div>
+  
+  <div class="main-controls">
+    <button class="button" id="clickAllCheckboxes">
+      <span class="icon">
+        <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+      </span>
+      Check All
+    </button>
+    
+    <button class="button" id="uncheckAllCheckboxes">
+      <span class="icon">
+        <svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+      </span>
+      Uncheck All
+    </button>
+    
+    <button class="button" id="toggleAllCheckboxes">
+      <span class="icon">
+        <svg viewBox="0 0 24 24"><path d="M6.99 11L3 15l3.99 4v-3H14v-2H6.99v-3zM21 9l-3.99-4v3H10v2h7.01v3L21 9z"/></svg>
+      </span>
+      Toggle All
+    </button>
+    
+    <button class="button" id="clickVisibleCheckboxes">
+      <span class="icon">
+        <svg viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
+      </span>
+      Check Visible
+    </button>
+    
+    <button class="button inspect" id="inspectContainer">
+      <span class="icon">
+        <svg viewBox="0 0 24 24"><path d="M12 8c-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4zm8.94 3A8.994 8.994 0 0 0 13 3.06V1h-2v2.06A8.994 8.994 0 0 0 3.06 11H1v2h2.06A8.994 8.994 0 0 0 11 20.94V23h2v-2.06A8.994 8.994 0 0 0 20.94 13H23v-2h-2.06zM12 19c-3.87 0-7-3.13-7-7s3.13-7 7-7 7 3.13 7 7-3.13 7-7 7z"/></svg>
+      </span>
+      Inspect Container
+    </button>
+  </div>
+  
+  <div class="inspect-controls">
+    <div class="instruction">
+      <span>Hover</span> over an element to highlight<br>
+      <span>Click</span> to select container<br>
+      Press <span>Esc</span> to cancel
+    </div>
+    <button class="button exit-btn" id="exitInspect">Exit Inspect</button>
+  </div>
+  
+  <div class="selected-container" id="selectedContainer" style="display: none;">
+    <span class="label">Selected</span>
+    <div style="display: flex; align-items: center; gap: 8px;">
+      <button class="eye-btn" id="highlightContainer" title="Highlight on page">
+        <svg viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
+      </button>
+      <button class="clear-btn" id="clearSelection">Clear</button>
+    </div>
+  </div>
+  
+  <div class="info">
+    <strong>How to use:</strong><br>
+    • Click buttons to check/uncheck<br>
+    • Use Inspect to target a container
+  </div>
+  
+  <div class="status" id="status"></div>
+  
+  <script src="popup.js"></script>
+</body>
+</html>

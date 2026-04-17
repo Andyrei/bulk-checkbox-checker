@@ -1,0 +1,346 @@
+:root {
+    --cc-primary: #00ff00;
+    --cc-primary-dim: rgba(0, 255, 0, 0.15);
+    --cc-primary-dimmer: rgba(0, 0, 0, 0.1);
+    --cc-primary-alt: #00ffaa;
+
+    --cc-bg-darkest: #0d0d0d;
+    --cc-bg-dark: #111;
+    --cc-bg-medium: #1a1a1a;
+    --cc-bg-light: #222;
+    --cc-bg-lighter: #262626;
+    --cc-bg-lightest: #333;
+
+    --cc-border-dark: #222;
+    --cc-border: #333;
+    --cc-border-light: #444;
+    --cc-border-lighter: #555;
+    --cc-border-danger: #442222;
+    --cc-border-danger-light: #664444;
+
+    --cc-text-dim: #666;
+    --cc-text: #888;
+    --cc-text-light: #aaa;
+    --cc-text-bright: #fff;
+
+    --cc-status-success: #4ade80;
+    --cc-status-error: #f87171;
+
+    --cc-overlay-dark: rgba(0, 0, 0, 0.4);
+    --cc-overlay-darker: rgba(0, 0, 0, 0.5);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    width: 280px;
+    padding: 16px;
+    font-family:
+        -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background-color: var(--cc-bg-darkest);
+    color: var(--cc-text-bright);
+}
+
+.header {
+    text-align: center;
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--cc-border-dark);
+}
+
+.header h3 {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    color: var(--cc-text);
+}
+
+.checkbox-count {
+    background-color: var(--cc-bg-dark);
+    padding: 6px 8px;
+    border-radius: 4px;
+    margin-bottom: 10px;
+    text-align: center;
+    font-size: 11px;
+    color: var(--cc-text-dim);
+    border: 1px solid var(--cc-border-dark);
+}
+
+.checkbox-count span {
+    color: var(--cc-text-bright);
+    font-weight: 600;
+}
+
+.button {
+    width: 100%;
+    padding: 8px 10px;
+    margin: 4px 0;
+    background-color: var(--cc-bg-medium);
+    color: var(--cc-text-bright);
+    border: 1px solid var(--cc-border);
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.15s ease;
+}
+
+.button:hover {
+    background-color: var(--cc-bg-lighter);
+    border-color: var(--cc-border-lighter);
+}
+
+.button:active {
+    background-color: var(--cc-bg-lightest);
+}
+
+.button-group {
+    display: flex;
+    gap: 4px;
+    margin: 4px 0;
+}
+
+.button-group .button {
+    flex: 1;
+    justify-content: center;
+    padding: 6px 8px;
+    font-size: 11px;
+}
+
+.button .icon {
+    width: 14px;
+    height: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.button .icon svg {
+    width: 12px;
+    height: 12px;
+    fill: currentColor;
+}
+
+.button.danger {
+    border-color: var(--cc-border-danger);
+}
+
+.button.danger:hover {
+    background-color: #2a1515;
+    border-color: var(--cc-border-danger-light);
+}
+
+.button.inspect {
+    border-color: var(--cc-border-dark);
+    padding: 4px 8px;
+    font-size: 10px;
+    background: transparent;
+    margin-top: 8px;
+}
+
+.button.inspect:hover {
+    background-color: var(--cc-bg-dark);
+    border-color: var(--cc-primary-alt);
+}
+
+.button.inspect .icon {
+    width: 14px;
+    height: 14px;
+}
+
+.button.inspect .icon svg {
+    width: 12px;
+    height: 12px;
+}
+
+.button.inspect.active {
+    background-color: #338888;
+    border-color: #44aaaa;
+    color: #000;
+}
+
+.selected-container {
+    background-color: var(--cc-bg-medium);
+    padding: 8px 10px;
+    border-radius: 4px;
+    margin: 8px 0;
+    font-size: 11px;
+    border: 1px solid var(--cc-border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+}
+
+.selected-container .label {
+    color: var(--cc-text);
+    font-weight: 500;
+}
+
+.selected-container .eye-btn {
+    background: var(--cc-bg-light);
+    border: 1px solid var(--cc-border-light);
+    border-radius: 4px;
+    cursor: pointer;
+    padding: 4px 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.15s;
+}
+
+.selected-container .eye-btn:hover {
+    background: var(--cc-bg-lightest);
+    border-color: var(--cc-primary);
+}
+
+.selected-container .eye-btn svg {
+    width: 14px;
+    height: 14px;
+    fill: var(--cc-text);
+}
+
+.selected-container .eye-btn:hover svg {
+    fill: var(--cc-primary);
+}
+
+.selected-container .selector {
+    color: var(--cc-text-light);
+    word-break: break-all;
+    font-family: monospace;
+}
+
+.selected-container .clear-btn {
+    margin-left: auto;
+    padding: 4px 8px;
+    background: transparent;
+    border: 1px solid var(--cc-border-light);
+    color: var(--cc-text);
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 10px;
+    white-space: nowrap;
+}
+
+.selected-container .clear-btn:hover {
+    background: var(--cc-bg-lightest);
+    color: var(--cc-text-bright);
+}
+
+.info {
+    background-color: var(--cc-bg-dark);
+    padding: 8px;
+    margin: 8px 0;
+    font-size: 10px;
+    color: var(--cc-text-dim);
+    border: 1px solid var(--cc-border-dark);
+    border-radius: 4px;
+    text-align: left;
+}
+
+.info strong {
+    color: var(--cc-text);
+    font-weight: 500;
+}
+
+.status {
+    text-align: center;
+    margin: 8px 0;
+    font-size: 12px;
+    min-height: 16px;
+    color: var(--cc-text-dim);
+}
+
+.status.success {
+    color: var(--cc-status-success);
+}
+
+.status.error {
+    color: var(--cc-status-error);
+}
+
+.button.loading {
+    pointer-events: none;
+    opacity: 0.7;
+}
+
+.button.loading .spinner {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-top-color: var(--cc-text-bright);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+.button.loading .icon {
+    display: none;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+body.inspecting .main-controls {
+    display: none;
+}
+
+body.inspecting .inspect-controls {
+    display: block !important;
+}
+
+body.inspecting {
+    padding: 12px;
+    background-color: var(--cc-bg-dark);
+}
+
+body.inspecting .header {
+    margin-bottom: 8px;
+}
+
+body.inspecting .checkbox-count {
+    display: none;
+}
+
+body.inspecting .info {
+    display: none;
+}
+
+.inspect-controls {
+    display: none;
+    text-align: center;
+}
+
+.inspect-controls .instruction {
+    font-size: 11px;
+    color: var(--cc-text-dim);
+    margin-bottom: 12px;
+    line-height: 1.5;
+}
+
+.inspect-controls .instruction span {
+    color: var(--cc-primary);
+}
+
+.inspect-controls .exit-btn {
+    background-color: var(--cc-bg-light);
+    color: var(--cc-text);
+    border: 1px solid var(--cc-border-light);
+}
+
+.inspect-controls .exit-btn:hover {
+    background-color: var(--cc-bg-lightest);
+    color: var(--cc-text-bright);
+    border-color: var(--cc-border-lighter);
+}
