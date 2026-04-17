@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Checkbox Checker",
   "version": "1.0",
-  "description": "Force check checkboxes on web pages with inspect mode to select a container. Click the extension icon to toggle checkboxes within the selected container.",
+  "description": "Check/uncheck all checkboxes in a selected container. Click extension icon to toggle.",
   "permissions": [
     "activeTab",
     "scripting",
