@@ -69,12 +69,14 @@ Need to target checkboxes in a specific section? Use Inspect Mode:
 ### Basic Usage Demo
 Check all, uncheck all, or toggle all checkboxes on any page.
 
-[!use-case-example](https://github.com/Andyrei/bulk-checkbox-checker/raw/main/docs/assets/use-case_example.mp4)
+https://github.com/user-attachments/assets/65cab9f3-9fd0-4abf-953d-d9883de4678a
 
 ### Inspect Feature Demo
 Select a specific container to target only checkboxes within that section.
 
-[!inspect-container-feature](https://github.com/Andyrei/bulk-checkbox-checker/raw/main/docs/assets/inspect-feature-demo.mp4)
+https://github.com/user-attachments/assets/03dc7a06-2b98-4a5f-bb65-de2b080c540b
+
+
 
 ## Usage Examples
 
