@@ -1,3 +1,28 @@
+/* Other Tools menu styles */
+#otherToolsMenu {
+    background: var(--cc-bg-dark);
+    border: 1px solid var(--cc-border);
+    border-radius: 6px;
+    box-shadow: 0 2px 8px #0008;
+    min-width: 160px;
+    z-index: 1000;
+}
+#otherToolsMenu .button {
+    background: transparent;
+    border: none;
+    color: var(--cc-text-light);
+    text-align: left;
+    padding: 8px 16px;
+    width: 100%;
+    border-radius: 0;
+    font-size: 12px;
+    gap: 8px;
+    transition: background 0.15s;
+}
+#otherToolsMenu .button:hover {
+    background: var(--cc-bg-lightest);
+    color: var(--cc-text-bright);
+}
 :root {
     --cc-primary: #00ff00;
     --cc-primary-dim: rgba(0, 255, 0, 0.15);

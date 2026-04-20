@@ -48,6 +48,24 @@
       </span>
       Inspect Container
     </button>
+
+    <button class="button" id="otherToolsBtn" style="margin-top:8px;">
+      <span class="icon">
+        <svg viewBox="0 0 24 24"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg>
+      </span>
+      Other Tools
+    </button>
+    <div id="otherToolsMenu" style="display:none;position:absolute;right:16px;top:220px;z-index:1000;background:var(--cc-bg-dark);border:1px solid var(--cc-border);border-radius:6px;box-shadow:0 2px 8px #0008;padding:8px 0;min-width:160px;">
+      <button class="button" id="highlightAllCheckboxes" style="width:100%;font-size:12px;justify-content:left;gap:8px;">
+        <span class="icon"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="2" rx="1"/><rect x="11" y="3" width="2" height="18" rx="1"/></svg></span>
+        Highlight All Checkboxes
+      </button>
+      <button class="button" id="trackCheckboxesBtn" style="width:100%;font-size:12px;justify-content:left;gap:8px;">
+        <span class="icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8" stroke="currentColor" stroke-width="2" fill="none"/><circle cx="12" cy="12" r="3" fill="currentColor"/></svg></span>
+        Track Checkbox Changes
+      </button>
+      <!-- More hidden tools can go here -->
+    </div>
   </div>
   
   <div class="inspect-controls">

@@ -1,4 +1,138 @@
 document.addEventListener("DOMContentLoaded", function () {
+        // Other Tools menu logic
+        const otherToolsBtn = document.getElementById("otherToolsBtn");
+        const otherToolsMenu = document.getElementById("otherToolsMenu");
+        let trackingActive = false;
+
+        function closeOtherToolsMenu(e) {
+            if (!otherToolsMenu.contains(e.target) && e.target !== otherToolsBtn) {
+                otherToolsMenu.style.display = "none";
+                document.removeEventListener("mousedown", closeOtherToolsMenu);
+            }
+        }
+
+        otherToolsBtn.addEventListener("click", (e) => {
+            e.stopPropagation();
+            if (otherToolsMenu.style.display === "block") {
+                otherToolsMenu.style.display = "none";
+            } else {
+                otherToolsMenu.style.display = "block";
+                document.addEventListener("mousedown", closeOtherToolsMenu);
+            }
+        });
+
+        // Highlight all checkboxes (even hidden)
+        document.getElementById("highlightAllCheckboxes").addEventListener("click", async () => {
+            otherToolsMenu.style.display = "none";
+            await executeScript(() => {
+                // Remove any previous overlays
+                document.querySelectorAll('.cc-checkbox-highlight').forEach(el => el.remove());
+                const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+                const overlays = [];
+                checkboxes.forEach(cb => {
+                    let overlay = document.createElement('div');
+                    overlay.className = 'cc-checkbox-highlight';
+                    overlay.style.cssText = `
+                        position:absolute;
+                        pointer-events:none;
+                        border:2px solid #00ff00;
+                        background:rgba(0,255,0,0.08);
+                        z-index:2147483647;
+                    `;
+                    document.body.appendChild(overlay);
+                    overlays.push({ cb, overlay });
+                });
+                function updateOverlays() {
+                    overlays.forEach(({ cb, overlay }) => {
+                        const rect = cb.getBoundingClientRect();
+                        const scrollLeft = window.scrollX || document.documentElement.scrollLeft;
+                        const scrollTop = window.scrollY || document.documentElement.scrollTop;
+                        overlay.style.left = (rect.left + scrollLeft) + 'px';
+                        overlay.style.top = (rect.top + scrollTop) + 'px';
+                        overlay.style.width = rect.width + 'px';
+                        overlay.style.height = rect.height + 'px';
+                    });
+                }
+                updateOverlays();
+                window.addEventListener('scroll', updateOverlays, true);
+                window.addEventListener('resize', updateOverlays, true);
+                setTimeout(() => {
+                    overlays.forEach(({ overlay }) => overlay.remove());
+                    window.removeEventListener('scroll', updateOverlays, true);
+                    window.removeEventListener('resize', updateOverlays, true);
+                }, 1800);
+            });
+            showStatus("Highlighted all checkboxes");
+        });
+
+        // Track checkbox changes visually
+        document.getElementById("trackCheckboxesBtn").addEventListener("click", async () => {
+            otherToolsMenu.style.display = "none";
+            if (!trackingActive) {
+                trackingActive = true;
+                await executeScript(() => {
+                    if (window.__ccTrackListener) return;
+                    window.__ccTrackListener = true;
+                    window.__ccTrackOverlays = window.__ccTrackOverlays || [];
+                    function highlightCheckbox(cb) {
+                        let overlay = document.createElement('div');
+                        overlay.className = 'cc-checkbox-highlight';
+                        overlay.style.cssText = `
+                            position:absolute;
+                            pointer-events:none;
+                            border:2px solid #00ffaa;
+                            background:rgba(0,255,170,0.12);
+                            z-index:2147483647;
+                        `;
+                        document.body.appendChild(overlay);
+                        window.__ccTrackOverlays.push({ cb, overlay });
+                        function updateOverlay() {
+                            const rect = cb.getBoundingClientRect();
+                            const scrollLeft = window.scrollX || document.documentElement.scrollLeft;
+                            const scrollTop = window.scrollY || document.documentElement.scrollTop;
+                            overlay.style.left = (rect.left + scrollLeft) + 'px';
+                            overlay.style.top = (rect.top + scrollTop) + 'px';
+                            overlay.style.width = rect.width + 'px';
+                            overlay.style.height = rect.height + 'px';
+                        }
+                        updateOverlay();
+                        window.addEventListener('scroll', updateOverlay, true);
+                        window.addEventListener('resize', updateOverlay, true);
+                        setTimeout(() => {
+                            overlay.remove();
+                            window.removeEventListener('scroll', updateOverlay, true);
+                            window.removeEventListener('resize', updateOverlay, true);
+                            window.__ccTrackOverlays = window.__ccTrackOverlays.filter(o => o.overlay !== overlay);
+                        }, 1200);
+                    }
+                    document.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+                        if (!cb.__ccTracked) {
+                            cb.addEventListener('change', function handler(e) {
+                                highlightCheckbox(cb);
+                            });
+                            cb.__ccTracked = true;
+                        }
+                    });
+                });
+                showStatus("Tracking checkbox changes (visual)");
+            } else {
+                trackingActive = false;
+                await executeScript(() => {
+                    window.__ccTrackListener = false;
+                    if (window.__ccTrackOverlays) {
+                        window.__ccTrackOverlays.forEach(({ overlay }) => overlay.remove());
+                        window.__ccTrackOverlays = [];
+                    }
+                    document.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+                        if (cb.__ccTracked) {
+                            // No reliable way to remove the handler, but disables new highlights
+                            cb.__ccTracked = false;
+                        }
+                    });
+                });
+                showStatus("Stopped tracking checkbox changes");
+            }
+        });
     const statusDiv = document.getElementById("status");
     const checkboxCountDiv = document.getElementById("checkboxCount");
     const selectedContainerDiv = document.getElementById("selectedContainer");
