@@ -370,3 +370,14 @@ document.addEventListener("DOMContentLoaded", function () {
     loadCurrentSelection();
     setInterval(updateCheckboxCount, 2000);
 });
+
+// Inject content.js into the active tab when popup opens
+(async function injectContentScriptIfNeeded() {
+    const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+    if (!tab || !tab.id) return;
+    // Check if the script is already injected (optional, can be improved)
+    chrome.scripting.executeScript({
+        target: { tabId: tab.id },
+        files: ["content.js"]
+    });
+})();
