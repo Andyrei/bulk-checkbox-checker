@@ -4,12 +4,16 @@
 
 ZIP_NAME="bulk-checkbox-checker.zip"
 INCLUDE_FILES=(
-  "manifest.json"
-  "background.js"
-  "content.js"
-  "popup.html"
-  "popup.js"
-  "cc-styles.css"
+    "manifest.json"
+    "background.js"
+    "content.js"
+    "popup.html"
+    "popup.js"
+    "cc-styles.css"
+    "icon-16.png"
+    "icon-32.png"
+    "icon-48.png"
+    "icon-128.png"
 )
 
 # Remove old zip if exists
