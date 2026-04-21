@@ -24,8 +24,8 @@
 
 ## 🛠️ Installation
 
-### Chrome Web Store *(Coming soon)*
-**Status:** Pending Review  
+### Chrome Web Store
+**Status:** Published 🟢
 [Chrome Web Store](https://chromewebstore.google.com/detail/ioipmnpdkkoihnlfkcnlcbcmninfglbo?utm_source=item-share-cb)
 
 ### Manual Installation (Developer Mode)
