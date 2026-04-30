@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "BULK Checkbox Checker",
-  "version": "1.1",
+  "version": "1.2",
   "description": "Check/uncheck all checkboxes in a selected container. Click extension icon to toggle.",
   "permissions": [
     "activeTab",
