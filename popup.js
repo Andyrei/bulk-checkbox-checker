@@ -149,28 +149,14 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    function executeScript(func, args = []) {
-        return new Promise(async (resolve, reject) => {
-            try {
-                const tab = await getCurrentTab();
-                chrome.scripting.executeScript(
-                    {
-                        target: { tabId: tab.id },
-                        function: func,
-                        args: args,
-                    },
-                    (results) => {
-                        if (chrome.runtime.lastError) {
-                            reject(chrome.runtime.lastError);
-                        } else {
-                            resolve(results[0]?.result);
-                        }
-                    },
-                );
-            } catch (e) {
-                reject(e);
-            }
+    async function executeScript(func, args = []) {
+        const tab = await getCurrentTab();
+        const results = await chrome.scripting.executeScript({
+            target: { tabId: tab.id },
+            function: func,
+            args: args,
         });
+        return results[0]?.result;
     }
 
     async function updateCheckboxCount() {
@@ -204,16 +190,20 @@ document.addEventListener("DOMContentLoaded", function () {
                 checkboxCountDiv.innerHTML = `<span>${count.total}</span> total · <span>${count.visible}</span> visible · <span>${count.checked}</span> checked`;
             }
         } catch (error) {
-            checkboxCountDiv.textContent = "Searching for checkboxes...";
+            console.error("updateCheckboxCount:", error);
+            checkboxCountDiv.textContent = "Failed to read checkboxes";
+            showStatus(error.message, true);
         }
     }
 
     function showStatus(message, isError = false) {
         statusDiv.textContent = message;
         statusDiv.className = "status " + (isError ? "error" : "success");
+        statusDiv.style.display = "block";
         setTimeout(() => {
             statusDiv.textContent = "";
             statusDiv.className = "status";
+            statusDiv.style.display = "none";
         }, 3000);
     }
 
@@ -274,7 +264,8 @@ document.addEventListener("DOMContentLoaded", function () {
                 showStatus(`Checked ${result} checkboxes`);
                 updateCheckboxCount();
             } catch (error) {
-                showStatus("Error", true);
+                console.error("clickAllCheckboxes:", error);
+                showStatus(error.message, true);
             }
             loading.done();
         });
@@ -314,7 +305,8 @@ document.addEventListener("DOMContentLoaded", function () {
                 showStatus(`Unchecked ${result} checkboxes`);
                 updateCheckboxCount();
             } catch (error) {
-                showStatus("Error", true);
+                console.error("uncheckAllCheckboxes:", error);
+                showStatus(error.message, true);
             }
             loading.done();
         });
@@ -354,7 +346,8 @@ document.addEventListener("DOMContentLoaded", function () {
                 showStatus(`Toggled ${result} checkboxes`);
                 updateCheckboxCount();
             } catch (error) {
-                showStatus("Error", true);
+                console.error("toggleAllCheckboxes:", error);
+                showStatus(error.message, true);
             }
             loading.done();
         });
@@ -401,7 +394,8 @@ document.addEventListener("DOMContentLoaded", function () {
                 showStatus(`Checked ${result} visible checkboxes`);
                 updateCheckboxCount();
             } catch (error) {
-                showStatus("Error", true);
+                console.error("clickVisibleCheckboxes:", error);
+                showStatus(error.message, true);
             }
             loading.done();
         });
@@ -493,15 +487,23 @@ document.addEventListener("DOMContentLoaded", function () {
 
     async function loadCurrentSelection() {
         try {
-            const result = await chrome.storage.local.get("checkboxClickerSelector",);
+            const result = await chrome.storage.local.get("checkboxClickerSelector");
             if (result.checkboxClickerSelector) {
                 updateContainerUI(result.checkboxClickerSelector);
             }
         } catch (e) {}
     }
 
+    async function loadVersion() {
+        try {
+            const manifest = chrome.runtime.getManifest();
+            document.getElementById("version").textContent = "v" + manifest.version;
+        } catch (e) {}
+    }
+
     updateCheckboxCount();
     loadCurrentSelection();
+    loadVersion();
     setInterval(updateCheckboxCount, 2000);
 });
 

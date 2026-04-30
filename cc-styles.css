@@ -369,3 +369,25 @@ body.inspecting .info {
     color: var(--cc-text-bright);
     border-color: var(--cc-border-lighter);
 }
+
+.footer {
+    text-align: center;
+    margin: 6px 0 4px;
+}
+
+.version {
+    font-size: 10px;
+    color: var(--cc-text-dim);
+    margin-right: 6px;
+}
+
+.feedback-link {
+    font-size: 10px;
+    color: var(--cc-text-dim);
+    text-decoration: none;
+    transition: color 0.15s;
+}
+
+.feedback-link:hover {
+    color: var(--cc-primary);
+}

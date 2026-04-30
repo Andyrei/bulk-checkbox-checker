@@ -1,0 +1,37 @@
+name: Bug Report
+description: Report something that isn't working as expected
+title: "[Bug]: "
+labels: ["bug"]
+
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: What happened?
+      description: A clear description of the bug and what you expected to happen.
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: How can we reproduce this?
+      value: |
+        1. Go to '...'
+        2. Click on '...'
+        3. Observe the issue
+    validations:
+      required: true
+
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: Browser version, extension version, and the URL where the bug occurs.
+      placeholder: |
+        - Browser: Chrome 131
+        - Extension: v1.2
+        - URL: https://example.com
+    validations:
+      required: true
