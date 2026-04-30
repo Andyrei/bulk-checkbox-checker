@@ -263,38 +263,58 @@ function showNotification(msg) {
     setTimeout(() => notif.remove(), 3500);
 }
 
+function isCheckboxChecked(cb) {
+    if (cb.type === 'checkbox') return cb.checked;
+    return cb.getAttribute('aria-checked') === 'true' || cb.getAttribute('data-state') === 'checked';
+}
+
+function isCheckboxDisabled(cb) {
+    if (cb.type === 'checkbox') return cb.disabled;
+    return cb.disabled || cb.getAttribute('aria-disabled') === 'true' || cb.getAttribute('data-disabled') === '';
+}
+
+function isCheckboxVisible(cb) {
+    const style = window.getComputedStyle(cb);
+    return style.display !== 'none' && style.visibility !== 'hidden' && cb.offsetParent !== null;
+}
+
+function toggleCheckbox(cb, action) {
+    const isChecked = isCheckboxChecked(cb);
+    const shouldCheck = action === 'check' || (action === 'toggle' && !isChecked);
+    const shouldUncheck = action === 'uncheck' || (action === 'toggle' && isChecked);
+    
+    if (action === 'check' && isChecked) return false;
+    if (action === 'uncheck' && !isChecked) return false;
+    
+    cb.click();
+    return true;
+}
+
+function getCheckboxes(container) {
+    const sel = 'input[type="checkbox"], [role="checkbox"]';
+    return container ? container.querySelectorAll(sel) : document.querySelectorAll(sel);
+}
+
 function checkCheckboxes(containerSelector, action) {
     const container = containerSelector ? document.querySelector(containerSelector) : null;
-    const checkboxes = container 
-        ? container.querySelectorAll('input[type="checkbox"]')
-        : document.querySelectorAll('input[type="checkbox"]');
+    const checkboxes = getCheckboxes(container);
     
     let count = 0;
     checkboxes.forEach(cb => {
-        if (cb.disabled) return;
-        if (action === 'check' && !cb.checked) { cb.click(); count++; }
-        else if (action === 'uncheck' && cb.checked) { cb.click(); count++; }
-        else if (action === 'toggle') { cb.click(); count++; }
-        else if (action === 'checkVisible') {
-            const style = window.getComputedStyle(cb);
-            if (style.display !== 'none' && style.visibility !== 'hidden' && cb.offsetParent !== null && !cb.checked) {
-                cb.click(); count++;
-            }
-        }
+        if (isCheckboxDisabled(cb)) return;
+        if (action === 'checkVisible' && !isCheckboxVisible(cb)) return;
+        if (action === 'checkVisible' && isCheckboxChecked(cb)) return;
+        if (toggleCheckbox(cb, action)) count++;
     });
     return count;
 }
 
 function getCheckboxCount(containerSelector) {
     const container = containerSelector ? document.querySelector(containerSelector) : null;
-    const checkboxes = container 
-        ? container.querySelectorAll('input[type="checkbox"]')
-        : document.querySelectorAll('input[type="checkbox"]');
-    const visible = Array.from(checkboxes).filter(cb => {
-        const style = window.getComputedStyle(cb);
-        return style.display !== 'none' && style.visibility !== 'hidden' && cb.offsetParent !== null;
-    });
-    return { total: checkboxes.length, visible: visible.length, checked: checkboxes.length ? Array.from(checkboxes).filter(c => c.checked).length : 0 };
+    const checkboxes = getCheckboxes(container);
+    const visible = Array.from(checkboxes).filter(cb => isCheckboxVisible(cb));
+    const checked = Array.from(checkboxes).filter(cb => isCheckboxChecked(cb)).length;
+    return { total: checkboxes.length, visible: visible.length, checked: checked };
 }
 
 chrome.runtime.onMessage?.addListener((req, sender, sendResponse) => {

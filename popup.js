@@ -25,9 +25,8 @@ document.addEventListener("DOMContentLoaded", function () {
         document.getElementById("highlightAllCheckboxes").addEventListener("click", async () => {
             otherToolsMenu.style.display = "none";
             await executeScript(() => {
-                // Remove any previous overlays
                 document.querySelectorAll('.cc-checkbox-highlight').forEach(el => el.remove());
-                const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+                const checkboxes = document.querySelectorAll('input[type="checkbox"], [role="checkbox"]');
                 const overlays = [];
                 checkboxes.forEach(cb => {
                     let overlay = document.createElement('div');
@@ -105,7 +104,7 @@ document.addEventListener("DOMContentLoaded", function () {
                             window.__ccTrackOverlays = window.__ccTrackOverlays.filter(o => o.overlay !== overlay);
                         }, 1200);
                     }
-                    document.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+                    document.querySelectorAll('input[type="checkbox"], [role="checkbox"]').forEach(cb => {
                         if (!cb.__ccTracked) {
                             cb.addEventListener('change', function handler(e) {
                                 highlightCheckbox(cb);
@@ -123,9 +122,8 @@ document.addEventListener("DOMContentLoaded", function () {
                         window.__ccTrackOverlays.forEach(({ overlay }) => overlay.remove());
                         window.__ccTrackOverlays = [];
                     }
-                    document.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+                    document.querySelectorAll('input[type="checkbox"], [role="checkbox"]').forEach(cb => {
                         if (cb.__ccTracked) {
-                            // No reliable way to remove the handler, but disables new highlights
                             cb.__ccTracked = false;
                         }
                     });
@@ -166,22 +164,23 @@ document.addEventListener("DOMContentLoaded", function () {
                     const container = selector
                         ? document.querySelector(selector)
                         : null;
+                    const sel = 'input[type="checkbox"], [role="checkbox"]';
                     const checkboxes = container
-                        ? container.querySelectorAll('input[type="checkbox"]')
-                        : document.querySelectorAll('input[type="checkbox"]');
-                    const visible = Array.from(checkboxes).filter((cb) => {
+                        ? container.querySelectorAll(sel)
+                        : document.querySelectorAll(sel);
+                    function isChecked(cb) {
+                        if (cb.type === 'checkbox') return cb.checked;
+                        return cb.getAttribute('aria-checked') === 'true' || cb.getAttribute('data-state') === 'checked';
+                    }
+                    function isVisible(cb) {
                         const style = window.getComputedStyle(cb);
-                        return (
-                            style.display !== "none" &&
-                            style.visibility !== "hidden" &&
-                            cb.offsetParent !== null
-                        );
-                    });
+                        return style.display !== 'none' && style.visibility !== 'hidden' && cb.offsetParent !== null;
+                    }
+                    const visible = Array.from(checkboxes).filter(isVisible);
                     return {
                         total: checkboxes.length,
                         visible: visible.length,
-                        checked: Array.from(checkboxes).filter((c) => c.checked)
-                            .length,
+                        checked: Array.from(checkboxes).filter(isChecked).length,
                     };
                 },
                 [currentContainerSelector],
@@ -243,16 +242,21 @@ document.addEventListener("DOMContentLoaded", function () {
                         const container = selector
                             ? document.querySelector(selector)
                             : null;
+                        const sel = 'input[type="checkbox"], [role="checkbox"]';
                         const checkboxes = container
-                            ? container.querySelectorAll(
-                                  'input[type="checkbox"]',
-                              )
-                            : document.querySelectorAll(
-                                  'input[type="checkbox"]',
-                              );
+                            ? container.querySelectorAll(sel)
+                            : document.querySelectorAll(sel);
+                        function isChecked(cb) {
+                            if (cb.type === 'checkbox') return cb.checked;
+                            return cb.getAttribute('aria-checked') === 'true' || cb.getAttribute('data-state') === 'checked';
+                        }
+                        function isDisabled(cb) {
+                            if (cb.type === 'checkbox') return cb.disabled;
+                            return cb.disabled || cb.getAttribute('aria-disabled') === 'true';
+                        }
                         let count = 0;
                         checkboxes.forEach((cb) => {
-                            if (!cb.checked && !cb.disabled) {
+                            if (!isChecked(cb) && !isDisabled(cb)) {
                                 cb.click();
                                 count++;
                             }
@@ -284,16 +288,21 @@ document.addEventListener("DOMContentLoaded", function () {
                         const container = selector
                             ? document.querySelector(selector)
                             : null;
+                        const sel = 'input[type="checkbox"], [role="checkbox"]';
                         const checkboxes = container
-                            ? container.querySelectorAll(
-                                  'input[type="checkbox"]',
-                              )
-                            : document.querySelectorAll(
-                                  'input[type="checkbox"]',
-                              );
+                            ? container.querySelectorAll(sel)
+                            : document.querySelectorAll(sel);
+                        function isChecked(cb) {
+                            if (cb.type === 'checkbox') return cb.checked;
+                            return cb.getAttribute('aria-checked') === 'true' || cb.getAttribute('data-state') === 'checked';
+                        }
+                        function isDisabled(cb) {
+                            if (cb.type === 'checkbox') return cb.disabled;
+                            return cb.disabled || cb.getAttribute('aria-disabled') === 'true';
+                        }
                         let count = 0;
                         checkboxes.forEach((cb) => {
-                            if (cb.checked && !cb.disabled) {
+                            if (isChecked(cb) && !isDisabled(cb)) {
                                 cb.click();
                                 count++;
                             }
@@ -325,16 +334,17 @@ document.addEventListener("DOMContentLoaded", function () {
                         const container = selector
                             ? document.querySelector(selector)
                             : null;
+                        const sel = 'input[type="checkbox"], [role="checkbox"]';
                         const checkboxes = container
-                            ? container.querySelectorAll(
-                                  'input[type="checkbox"]',
-                              )
-                            : document.querySelectorAll(
-                                  'input[type="checkbox"]',
-                              );
+                            ? container.querySelectorAll(sel)
+                            : document.querySelectorAll(sel);
+                        function isDisabled(cb) {
+                            if (cb.type === 'checkbox') return cb.disabled;
+                            return cb.disabled || cb.getAttribute('aria-disabled') === 'true';
+                        }
                         let count = 0;
                         checkboxes.forEach((cb) => {
-                            if (!cb.disabled) {
+                            if (!isDisabled(cb)) {
                                 cb.click();
                                 count++;
                             }
@@ -366,23 +376,25 @@ document.addEventListener("DOMContentLoaded", function () {
                         const container = selector
                             ? document.querySelector(selector)
                             : null;
+                        const sel = 'input[type="checkbox"], [role="checkbox"]';
                         const checkboxes = container
-                            ? container.querySelectorAll(
-                                  'input[type="checkbox"]',
-                              )
-                            : document.querySelectorAll(
-                                  'input[type="checkbox"]',
-                              );
+                            ? container.querySelectorAll(sel)
+                            : document.querySelectorAll(sel);
+                        function isChecked(cb) {
+                            if (cb.type === 'checkbox') return cb.checked;
+                            return cb.getAttribute('aria-checked') === 'true' || cb.getAttribute('data-state') === 'checked';
+                        }
+                        function isDisabled(cb) {
+                            if (cb.type === 'checkbox') return cb.disabled;
+                            return cb.disabled || cb.getAttribute('aria-disabled') === 'true';
+                        }
+                        function isVisible(cb) {
+                            const style = window.getComputedStyle(cb);
+                            return style.display !== 'none' && style.visibility !== 'hidden' && cb.offsetParent !== null;
+                        }
                         let count = 0;
                         checkboxes.forEach((cb) => {
-                            const style = window.getComputedStyle(cb);
-                            if (
-                                style.display !== "none" &&
-                                style.visibility !== "hidden" &&
-                                cb.offsetParent !== null &&
-                                !cb.checked &&
-                                !cb.disabled
-                            ) {
+                            if (isVisible(cb) && !isChecked(cb) && !isDisabled(cb)) {
                                 cb.click();
                                 count++;
                             }
